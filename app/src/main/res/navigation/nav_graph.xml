@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/select_language">
+
+    <fragment
+        android:id="@+id/select_language"
+        android:name="com.example.thewrittensystem.select_language"
+        android:label="fragment_select_language"
+        tools:layout="@layout/fragment_select_language" >
+        <action
+            android:id="@+id/action_select_language_to_tamil_collection"
+            app:destination="@id/tamil_collection" />
+    </fragment>
+    <fragment
+        android:id="@+id/tamil_collection"
+        android:name="com.example.thewrittensystem.tamil_collection"
+        android:label="fragment_tamil_collection"
+        tools:layout="@layout/fragment_tamil_collection" >
+        <action
+            android:id="@+id/action_tamil_collection_to_grid"
+            app:destination="@id/grid" />
+    </fragment>
+    <fragment
+        android:id="@+id/grid"
+        android:name="com.example.thewrittensystem.grid"
+        android:label="fragment_grid"
+        tools:layout="@layout/fragment_grid" >
+        <action
+            android:id="@+id/action_grid_to_canvas"
+            app:destination="@id/canvas" />
+    </fragment>
+    <fragment
+        android:id="@+id/canvas"
+        android:name="com.example.thewrittensystem.canvas"
+        android:label="fragment_canvas"
+        tools:layout="@layout/fragment_canvas" />
+</navigation>
