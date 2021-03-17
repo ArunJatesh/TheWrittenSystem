@@ -8,6 +8,7 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="16dp"
     android:padding="10dp"
+    android:foreground="?attr/selectableItemBackground"
     android:descendantFocusability="blocksDescendants"
     android:focusable="false"
     app:cardCornerRadius="8dp"
