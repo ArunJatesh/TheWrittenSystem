@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/select_language"
-        android:name="com.example.thewrittensystem.select_language"
+        android:name="com.example.thewrittensystem.fragment.select_language"
         android:label="fragment_select_language"
         tools:layout="@layout/fragment_select_language" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/tamil_collection"
-        android:name="com.example.thewrittensystem.tamil_collection"
+        android:name="com.example.thewrittensystem.fragment.tamil_collection"
         android:label="fragment_tamil_collection"
         tools:layout="@layout/fragment_tamil_collection" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/grid"
-        android:name="com.example.thewrittensystem.grid"
+        android:name="com.example.thewrittensystem.fragment.grid"
         android:label="fragment_grid"
         tools:layout="@layout/fragment_grid" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/canvas"
-        android:name="com.example.thewrittensystem.canvas"
+        android:name="com.example.thewrittensystem.fragment.canvas"
         android:label="fragment_canvas"
         tools:layout="@layout/fragment_canvas" />
 </navigation>
