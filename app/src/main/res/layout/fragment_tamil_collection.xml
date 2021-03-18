@@ -16,6 +16,7 @@
         android:layout_marginTop="80dp"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:fontFamily="@font/mukta_malar_regular"
         android:text="TAMIL\nதமிழ்"
         android:textSize="24sp" />
     <androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginTop="30dp"
         android:horizontalSpacing="30dp"
-        android:verticalSpacing="30dp"/>
+        android:verticalSpacing="30dp"
+        android:scrollbars="none"/>
 
 
 </LinearLayout>
