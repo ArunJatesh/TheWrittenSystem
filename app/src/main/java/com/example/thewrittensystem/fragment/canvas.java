@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -48,17 +50,16 @@ public class canvas extends Fragment {
         Button doneButton = view.findViewById(R.id.btnDone);
 
         config.setStrokeColor(getResources().getColor(R.color.red));
-        config.setShowCanvasBounds(true);
         config.setStrokeWidth(30.0f);
         config.setMinZoom(1.0f);
         config.setMaxZoom(1.0f);
-        config.setCanvasHeight(1260);
-        config.setCanvasWidth(970);
+        config.setCanvasHeight(1400);
+        config.setCanvasWidth(1100);
+
         drawableView.setConfig(config);
 
         //Sets background image with letter
         drawableView.setBackgroundResource(R.drawable.bg);
-
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
