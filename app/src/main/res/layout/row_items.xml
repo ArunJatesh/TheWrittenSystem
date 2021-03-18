@@ -26,8 +26,9 @@
             android:padding="24dp"
             android:focusable="false"
             android:layout_gravity="center"
+            android:fontFamily="@font/mukta_malar_regular"
             android:text="Word"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textAlignment="center"/>
     </LinearLayout>
 

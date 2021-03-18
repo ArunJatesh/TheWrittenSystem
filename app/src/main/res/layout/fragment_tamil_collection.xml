@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:text="TAMIL"
+        android:text="TAMIL\nதமிழ்"
         android:textSize="24sp" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:horizontalSpacing="30dp"
         android:verticalSpacing="30dp"/>
 
