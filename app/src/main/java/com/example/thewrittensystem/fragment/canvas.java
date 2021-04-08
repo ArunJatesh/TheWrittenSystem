@@ -3,8 +3,12 @@ package com.example.thewrittensystem.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +25,20 @@ import com.example.thewrittensystem.ml.MobileNetV2;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Random;
 
 
 import me.panavtec.drawableview.DrawableView;
 import me.panavtec.drawableview.DrawableViewConfig;
 
 public class canvas extends Fragment {
+
+    int counter =0;
 
     private DrawableView drawableView;
     private DrawableViewConfig config = new DrawableViewConfig();
@@ -61,10 +71,11 @@ public class canvas extends Fragment {
         config.setCanvasHeight(1400);
         config.setCanvasWidth(1100);
 
+
         drawableView.setConfig(config);
 
         //Sets background image with letter
-        drawableView.setBackgroundResource(R.drawable.test);
+        drawableView.setBackgroundResource(R.drawable.u1);
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,14 +95,35 @@ public class canvas extends Fragment {
             public void onClick(View v) {
                 try {
 
-                    Bitmap drawnLetter = BitmapFactory.decodeResource(getResources(),R.drawable.test0);
-                    //Bitmap drawnLetter = drawableView.obtainBitmap();
+                    //Bitmap drawnLetter = BitmapFactory.decodeResource(getResources(),R.drawable.test034);
+                    Bitmap drawnLetter = drawableView.obtainBitmap();
+                    drawnLetter.setHasAlpha(true);
+                    Bitmap newBitmap = Bitmap.createBitmap(drawnLetter.getWidth(), drawnLetter.getHeight(), drawnLetter.getConfig());
+                    Canvas canvasbn = new Canvas(newBitmap);
+                    canvasbn.drawColor(Color.WHITE);
+                    canvasbn.drawBitmap(drawnLetter, 0, 0, null);
+
+                    try{
+                        String path = Environment.getExternalStorageDirectory().toString();
+                        OutputStream fOut = null;
+
+                        File file = new File(path, "drawing"+counter+".png"); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+                        fOut = new FileOutputStream(file);
+                        newBitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                        fOut.flush(); // Not really required
+                        fOut.close(); // do not forget to close the stream
+                        MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+                        counter+=1;
+
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     int modelInputSize = 0;
 
                     modelInputSize = 4 * 224 * 224 * 3;
 
-                    Bitmap resizedImage = Bitmap.createScaledBitmap(drawnLetter,224,224,true);
+                    Bitmap resizedImage = Bitmap.createScaledBitmap(newBitmap,224,224,true);
 
                     TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1,224,224,3}, DataType.FLOAT32);
 
@@ -123,9 +155,9 @@ public class canvas extends Fragment {
 
                     @org.checkerframework.checker.nullness.qual.NonNull float[] arr = outputFeature0.getFloatArray();
 
-                    float max = arr[0];
+                    double max = arr[0];
                     int index =0;
-
+                    System.out.println("Value : " + arr[0] + "\t" + "Index : " + 0 + "\n");
                     for(int i=1;i<35;i++) {
                         System.out.println("Value : " + arr[i] + "\t" + "Index : " + i + "\n");
 
