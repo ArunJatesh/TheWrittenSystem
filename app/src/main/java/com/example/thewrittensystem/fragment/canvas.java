@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,7 +76,7 @@ public class canvas extends Fragment {
         drawableView.setConfig(config);
 
         //Sets background image with letter
-        drawableView.setBackgroundResource(R.drawable.u1);
+        drawableView.setBackgroundResource(R.drawable.u4);
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,9 +158,10 @@ public class canvas extends Fragment {
 
                     double max = arr[0];
                     int index =0;
-                    System.out.println("Value : " + arr[0] + "\t" + "Index : " + 0 + "\n");
+                    //System.out.println("Value : " + arr[0] + "\t" + "Index : " + 0 + "\n");
+
                     for(int i=1;i<35;i++) {
-                        System.out.println("Value : " + arr[i] + "\t" + "Index : " + i + "\n");
+                        //System.out.println("Value : " + arr[i] + "\t" + "Index : " + i + "\n");
 
                         if(arr[i]>max)
                         {
@@ -168,7 +170,9 @@ public class canvas extends Fragment {
                         }
                     }
 
-                    System.out.println("Value : " + max + "\t" + "Index : " + index );
+                    //System.out.println("Value : " + max + "\t" + "Index : " + index );
+
+                    Toast.makeText(getActivity().getApplicationContext(),"Value " + max + "Index " + index,Toast.LENGTH_LONG).show();
 
 
                     modelF.close();
