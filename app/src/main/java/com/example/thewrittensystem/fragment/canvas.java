@@ -1,6 +1,7 @@
 package com.example.thewrittensystem.fragment;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,7 +13,10 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -42,6 +47,9 @@ public class canvas extends Fragment {
     int counter =0;
 
     private DrawableView drawableView;
+    characters list;
+    TextView txtView ;
+
     private DrawableViewConfig config = new DrawableViewConfig();
 
     @Override
@@ -53,13 +61,17 @@ public class canvas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+
         return inflater.inflate(R.layout.fragment_canvas, container, false);
+
     }
-//
+    //
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        txtView = view.findViewById(R.id.letter);
         drawableView = view.findViewById(R.id.paintView);
         Button resetButton = view.findViewById(R.id.btnReset);
         Button undoButton = view.findViewById(R.id.btnUndo);
@@ -71,12 +83,18 @@ public class canvas extends Fragment {
         config.setMaxZoom(1.0f);
         config.setCanvasHeight(1400);
         config.setCanvasWidth(1100);
+        list = (characters) getArguments().getSerializable("char");
+        characters currentCharacter = list;
+
+        txtView.setText(currentCharacter.getTxt());
+
+
+        drawableView.setBackgroundResource(currentCharacter.getmImageResourceId());
 
 
         drawableView.setConfig(config);
 
         //Sets background image with letter
-        drawableView.setBackgroundResource(R.drawable.u4);
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
