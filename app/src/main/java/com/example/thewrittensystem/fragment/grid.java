@@ -1,13 +1,14 @@
 package com.example.thewrittensystem.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,8 @@ import android.widget.TextView;
 
 import com.example.thewrittensystem.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class grid extends Fragment {
 
@@ -27,6 +28,7 @@ public class grid extends Fragment {
     TextView textView;
     ArrayList<characters> list;
     NavController navController;
+    AlertDialog.Builder builder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +38,13 @@ public class grid extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_grid, container, false);
+        AtomicReference<View> view = new AtomicReference<>(inflater.inflate(R.layout.fragment_grid, container, false));
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
 
         // Get a reference to the ListView, and attach the adapter to the listView.
-        gridView = view.findViewById(R.id.gridViewCharacters);
-        textView = view.findViewById(R.id.textView);
+        gridView = view.get().findViewById(R.id.gridViewCharacters);
+        textView = view.get().findViewById(R.id.textView);
 
         Bundle bundle = this.getArguments();
         String data = bundle.getString("key");
@@ -52,13 +54,35 @@ public class grid extends Fragment {
         CustomAdapter obj = new CustomAdapter(list, getActivity());
         gridView.setAdapter(obj);
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
-            Bundle bundle1 = new Bundle();
-            bundle1.putSerializable("char",  list.get(position));
+            if(position>=1 && position<=5)
+            {
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("char", list.get(position));
+                navController.navigate(R.id.action_grid_to_canvas, bundle1);
+            }
+            else
+            {
+                builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater layoutInflater = requireActivity().getLayoutInflater();
+                view.set(layoutInflater.inflate(R.layout.alert_dialog, null));
+                ImageView img = view.get().findViewById(R.id.image);
+                TextView txt = view.get().findViewById(R.id.achieved);
+                img.setImageResource(R.drawable.amaze);
+                txt.setText("This feature is still under development, Stay tuned!");
 
-            navController.navigate(R.id.action_grid_to_canvas, bundle1);
+                builder.setView(view.get())
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
 
         });
-        return view;
+        return view.get();
     }
 
     public class CustomAdapter extends BaseAdapter {

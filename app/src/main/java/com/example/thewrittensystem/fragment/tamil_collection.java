@@ -1,5 +1,7 @@
 package com.example.thewrittensystem.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,13 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.thewrittensystem.adapter.CollectionAdapter;
 import com.example.thewrittensystem.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class tamil_collection extends Fragment {
     private CollectionAdapter.RecyclerViewClickListener listener;
     NavController navController;
     ArrayList<characters> UyirArrayList = new ArrayList<characters>();
+    AlertDialog.Builder builder;
 
     String[] collections = {"Uyir Ezhuthukkal\nஉயிர் எழுத்துக்கள்", "Mei Ezhuthukkal\nமெய் எழுத்துக்கள்", "Uyirmei Ezhuthukkal\nஉயிர்மெய் எழுத்துக்கள்", "Aayudha Ezhuthu\nஆயுத எழுத்து"};
     String[] uyir = {"அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ"};
@@ -93,14 +96,37 @@ public class tamil_collection extends Fragment {
     }
     private void setOnClickListener(){
         listener = (v, position) -> {
-            Log.d("imagedata","Position clicked: "+ position);
-            Bundle bundle = new Bundle();
-            bundle.putString("key", collections[position]);
-            bundle.putSerializable("characters", category.get(position));
+            if(position == 0)
+            {
+                Log.d("imagedata", "Position clicked: " + position);
+                Bundle bundle = new Bundle();
+                bundle.putString("key", collections[position]);
+                bundle.putSerializable("characters", category.get(position));
+                grid fragment = new grid();
+                fragment.setArguments(bundle);
+                navController.navigate(R.id.action_tamil_collection_to_grid, bundle);
+            }
+            else
+            {
+                builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater layoutInflater = requireActivity().getLayoutInflater();
+                View view = layoutInflater.inflate(R.layout.alert_dialog,null);
+                ImageView img = view.findViewById(R.id.image);
+                TextView txt = view.findViewById(R.id.achieved);
+                img.setImageResource(R.drawable.amaze);
+                txt.setText("This feature is still under development, Stay tuned!");
 
-            grid fragment = new grid();
-            fragment.setArguments(bundle);
-            navController.navigate(R.id.action_tamil_collection_to_grid, bundle);
+                builder.setView(view)
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                ;
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
         };
 
     }

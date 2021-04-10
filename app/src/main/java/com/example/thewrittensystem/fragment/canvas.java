@@ -1,9 +1,9 @@
 package com.example.thewrittensystem.fragment;
 
 
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,16 +13,17 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.thewrittensystem.R;
 import com.example.thewrittensystem.ml.MobileNetV2;
@@ -35,9 +36,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Random;
-
 
 import me.panavtec.drawableview.DrawableView;
 import me.panavtec.drawableview.DrawableViewConfig;
@@ -51,6 +49,9 @@ public class canvas extends Fragment {
     TextView txtView ;
 
     private DrawableViewConfig config = new DrawableViewConfig();
+    AlertDialog.Builder builder;
+
+    NavController navController;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,9 +62,7 @@ public class canvas extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         return inflater.inflate(R.layout.fragment_canvas, container, false);
 
     }
@@ -176,24 +175,64 @@ public class canvas extends Fragment {
 
                     double max = arr[0];
                     int index =0;
-                    //System.out.println("Value : " + arr[0] + "\t" + "Index : " + 0 + "\n");
 
                     for(int i=1;i<35;i++) {
-                        //System.out.println("Value : " + arr[i] + "\t" + "Index : " + i + "\n");
-
                         if(arr[i]>max)
                         {
                             max = arr[i];
                             index = i;
                         }
                     }
-
-                    //System.out.println("Value : " + max + "\t" + "Index : " + index );
-
-                    Toast.makeText(getActivity().getApplicationContext(),"Value " + max + "Index " + index,Toast.LENGTH_LONG).show();
-
-
                     modelF.close();
+
+                    builder = new AlertDialog.Builder(getActivity());
+                    LayoutInflater layoutInflater = requireActivity().getLayoutInflater();
+                    View view = layoutInflater.inflate(R.layout.alert_dialog,null);
+                    ImageView img = view.findViewById(R.id.image);
+                    TextView txt = view.findViewById(R.id.achieved);
+                    int id = Integer.valueOf(list.getId());
+                    if(id == index)
+                    {
+                        img.setImageResource(R.drawable.happy);
+                        txt.setText("You did it!");
+                        builder.setView(view)
+                                .setPositiveButton("Go back", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        navController.popBackStack();
+                                    }
+                                })
+                                .setNegativeButton("Try Again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                    else
+                    {
+                        img.setImageResource(R.drawable.sad);
+                        txt.setText("You can do better!");
+                        builder.setView(view)
+                                .setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("Go back", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        navController.popBackStack();
+                                    }
+                                });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
                 }
                 catch (Exception e) {
                     // TODO Handle the exception
