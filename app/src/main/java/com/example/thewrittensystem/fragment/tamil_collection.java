@@ -58,17 +58,6 @@ public class tamil_collection extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-
-
-        // Get a reference to the ListView, and attach the adapter to the listView.
-
-        // Inflate the layout for this fragment
         UyirArrayList.add(new characters("அ","0",R.drawable.u0));
         UyirArrayList.add(new characters("ஆ","1",R.drawable.u1));
         UyirArrayList.add(new characters("இ","2",R.drawable.u2));
@@ -81,6 +70,18 @@ public class tamil_collection extends Fragment {
         UyirArrayList.add(new characters("ஒ","9",R.drawable.u9));
         UyirArrayList.add(new characters("ஓ","10",R.drawable.u10));
         UyirArrayList.add(new characters("ஔ","11",R.drawable.u11));
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+
+
+        // Get a reference to the ListView, and attach the adapter to the listView.
+
+        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_tamil_collection, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         setAdapter();
